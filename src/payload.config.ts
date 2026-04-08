@@ -1,34 +1,57 @@
+import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
-import sharp from 'sharp'
+import { cloudinaryStorage } from 'payloadcms-storage-cloudinary'
 
-import { Users } from './collections/Users'
+import { News } from './collections/News'
+import { Events } from './collections/Events'
+import { Departments } from './collections/Departments'
+import { Executives } from './collections/Executives'
+import { ELibrary } from './collections/ELibrary'
+import { Research } from './collections/Research'
+import { Gallery } from './collections/Gallery'
+import { Payments } from './collections/Payments'
 import { Media } from './collections/Media'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+import { SiteSettings } from './globals/SiteSettings'
+import { Users } from './collections/Users'
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
+    user: 'users',
+    meta: {
+      titleSuffix: '— FBMS OOU Admin',
     },
   },
-  collections: [Users, Media],
-  editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
+  collections: [
+    Users,
+    News,
+    Events,
+    Departments,
+    Executives,
+    ELibrary,
+    Research,
+    Gallery,
+    Payments,
+    Media,
+  ],
+  globals: [SiteSettings],
+  editor: lexicalEditor({}),
   db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URL || '',
-    },
+    pool: { connectionString: process.env.DATABASE_URI },
   }),
-  sharp,
-  plugins: [],
+  plugins: [
+    cloudinaryStorage({
+      collections: {
+        media: true,
+      },
+      cloudinaryConfig: {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
+        api_key: process.env.CLOUDINARY_API_KEY || '',
+        api_secret: process.env.CLOUDINARY_API_SECRET || '',
+      },
+      folder: process.env.CLOUDINARY_FOLDER || 'fbms-oou',
+    }),
+  ],
+  typescript: { outputFile: './src/payload-types.ts' },
+  secret: process.env.PAYLOAD_SECRET || '',
 })

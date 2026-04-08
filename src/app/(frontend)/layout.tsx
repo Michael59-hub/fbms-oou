@@ -1,19 +1,28 @@
-import React from 'react'
+import type { Metadata } from 'next'
+import Navbar from '@/components/NavBar'
+import Footer from '@/components/Footer'
 import './styles.css'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+export const metadata: Metadata = {
+  title: {
+    template: '%s | FBMS OOU',
+    default: 'Faculty of Basic Medical Sciences — OOU',
+  },
+  description: 'Official website of the Faculty of Basic Medical Sciences, Olabisi Onabanjo University.',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function FrontendLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
-    </html>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        {children}
+      </main>
+      <Footer />
+    </div>
   )
 }
