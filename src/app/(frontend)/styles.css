@@ -7,6 +7,16 @@
   max-width: 80ch; /* Better readability for research/news articles */
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }
@@ -81,7 +91,6 @@ p {
 }
 
 a {
-  color: currentColor;
 
   &:focus {
     opacity: 0.8;

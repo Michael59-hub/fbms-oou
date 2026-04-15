@@ -17,12 +17,14 @@ export default function FrontendLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
-      <Footer />
-    </div>
+    <html lang="en">
+      <body className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </body>
+    </html>
   )
 }
